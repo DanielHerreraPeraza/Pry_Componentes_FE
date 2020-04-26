@@ -4,31 +4,39 @@ import Quote from './components/Quote';
 
 function App() {
 
-  let initialQuotes = JSON.parse(localStorage.getItem('quotes'));
-  if(!initialQuotes){
-    initialQuotes = [];
-  }
+  let url = "http://localhost:8083/quotes"
 
-  const [quotes, saveQuotes] = useState(initialQuotes);
+  const [quotes, saveQuotes] = useState([]);
 
 
   useEffect( () => { 
-    if(initialQuotes){
-      localStorage.setItem('quotes', JSON.stringify(quotes));
-    }else{
-      localStorage.setItem('quotes', JSON.stringify([]));
-    }
-  }, [quotes] );
+    getData();
+  }, [] );
 
+  const getData = async () => {
+      const data = await fetch(url);
+      const quotes = await data.json();
+      saveQuotes(quotes);
 
-  const createQuotes = quote =>{
+  } 
+
+  const createQuotes = async (quote) =>{
+    await fetch(url, {
+      method: 'POST',
+      headers:{'Content-type' : 'application/json'},
+      body:JSON.stringify(quote)
+    })
       saveQuotes([
-        ...quotes,
-        quote
+       ...quotes,
+       quote
       ])
-  }
+}
 
   const deleteQuote = id => {
+    fetch(url + "?id=" + id, {
+      method: 'DELETE',
+      headers:{'Content-type' : 'application/json'}
+    })
     const newQuotes = quotes.filter(quote => quote.id !== id)
     saveQuotes(newQuotes);
   };
