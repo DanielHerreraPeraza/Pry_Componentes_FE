@@ -1,25 +1,73 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState, useEffect } from 'react';
+import Form from './components/Form';
+import Quote from './components/Quote';
 
 function App() {
+
+  let url = "http://localhost:8083/quotes"
+
+  const [quotes, saveQuotes] = useState([]);
+
+
+  useEffect( () => { 
+    getData();
+  }, [] );
+
+  const getData = async () => {
+      const data = await fetch(url);
+      const quotes = await data.json();
+      saveQuotes(quotes);
+
+  } 
+
+  const createQuotes = async (quote) =>{
+    await fetch(url, {
+      method: 'POST',
+      headers:{'Content-type' : 'application/json'},
+      body:JSON.stringify(quote)
+    })
+      saveQuotes([
+       ...quotes,
+       quote
+      ])
+}
+
+  const deleteQuote = id => {
+    fetch(url + "?id=" + id, {
+      method: 'DELETE',
+      headers:{'Content-type' : 'application/json'}
+    })
+    const newQuotes = quotes.filter(quote => quote.id !== id)
+    saveQuotes(newQuotes);
+  };
+  
+  const titulo = quotes.length === 0 ? "You've no quotes" : 'Quote manangment'
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <h1>Patient Administration</h1>
+
+      <div className="container">
+        <div className="row">
+          <div className="one-half column">
+            <Form
+             createQuotes={createQuotes}/>
+          </div>
+          <div className="one-half column">
+            <h2>{titulo}</h2>
+            {quotes.map(quote =>(
+              <Quote
+                key = {quote.id}
+                quote={quote}
+                deleteQuote={deleteQuote}
+              />
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </Fragment>
+   
   );
 }
 
