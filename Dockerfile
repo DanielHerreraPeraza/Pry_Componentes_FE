@@ -1,13 +1,13 @@
 # Stage 1
 FROM node:8 as react-build
-WORKDIR /app
-COPY ./pry-componentes/ /app/
-VOLUME ./pry-componentes/
-RUN yarn
-RUN yarn build
-# Stage 2 - the production environment
-FROM nginx:alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=react-build /app/build /usr/share/nginx/html
-EXPOSE 85
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8090
+
+CMD ["npm", "start"]
