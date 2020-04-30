@@ -2,6 +2,7 @@
 FROM node:8 as react-build
 WORKDIR /app
 COPY . ./
+COPY ./pry-componentes/package.json
 RUN yarn
 RUN yarn build
 
