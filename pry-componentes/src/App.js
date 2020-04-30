@@ -4,7 +4,7 @@ import Quote from './components/Quote';
 
 function App() {
 
-  let url = "http://localhost:8083/quotes"
+  let url = "https://backendcomponentes-5k5vhfx5aq-uc.a.run.app/quotes"
 
   const [quotes, saveQuotes] = useState([]);
 
