@@ -5,6 +5,7 @@ const Form = ({ createQuotes }) => {
   const [quote, setQuote] = useState({
     pet: "",
     owner: "",
+    email: "",
     date: "",
     hour: "",
     symptom: "",
@@ -19,7 +20,7 @@ const Form = ({ createQuotes }) => {
     });
   };
 
-  const { pet, owner, date, hour, symptom } = quote;
+  const { pet, owner, email, date, hour, symptom } = quote;
 
   const submitQuote = (e) => {
     e.preventDefault();
@@ -27,6 +28,7 @@ const Form = ({ createQuotes }) => {
     if (
       pet.trim() === "" ||
       owner.trim() === "" ||
+      email.trim() === "" ||
       date.trim() === "" ||
       hour.trim() === "" ||
       symptom.trim() === ""
@@ -44,6 +46,7 @@ const Form = ({ createQuotes }) => {
     setQuote({
       pet: "",
       owner: "",
+      email: "",
       date: "",
       hour: "",
       symptom: "",
@@ -75,6 +78,16 @@ const Form = ({ createQuotes }) => {
           placeholder="Owner name"
           onChange={handleChange}
           value={owner}
+        />
+
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          className="u-full-width"
+          placeholder="email@example.com"
+          onChange={handleChange}
+          value={email}
         />
 
         <label>Date</label>
