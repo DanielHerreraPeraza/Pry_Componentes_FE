@@ -4,6 +4,7 @@ const Quote = ({quote, deleteQuote}) => (
     <div className="quote">
         <p>Pet: <span>{quote.pet}</span> </p>
         <p>Owner: <span>{quote.owner}</span> </p>
+        <p>Email: <span>{quote.email}</span> </p>
         <p>Date: <span>{new Intl.DateTimeFormat("en-GB", {
           year: "numeric",
           month: "long",
